@@ -1,31 +1,56 @@
+import { Hono } from "hono";
 import "reflect-metadata";
 import { container } from "tsyringe";
 import { User } from "./entities/user.entity.ts";
 import { UserService } from "./services/user.service.ts";
 
+const app = new Hono();
 const userService = container.resolve(UserService);
 
-console.log(await userService.getList());
+app.use("*", async (c, next) => {
+  const start = Date.now();
+  await next();
+  const end = Date.now();
+  c.res.headers.set("X-Response-Time", `${end - start}`);
+});
 
-const createUser = new User();
-createUser.username = "my name";
-createUser.email = "myEmail@gmail.com";
-createUser.password = "password";
-const created = await userService.create(createUser);
+app
+  .get("user", async (c) => {
+    const data = await userService.getList();
+    return c.json(data);
+  })
+  .post("user", async (c) => {
+    const body = await c.req.json<User>();
 
-console.log(created);
-console.log(await userService.getList());
+    const newUser = new User();
+    newUser.username = body["username"];
+    newUser.email = body["email"];
+    newUser.password = body["password"];
 
-const updateUser = new User();
-updateUser.username = "bird";
-updateUser.email = "bird@gmail.com";
-updateUser.password = "bird1234";
-const updated = await userService.update("ID001", updateUser);
+    const data = await userService.create(newUser);
 
-console.log(updated);
-console.log(await userService.getList());
+    return c.json(data);
+  })
+  .put("user/:id", async (c) => {
+    const body = await c.req.json<User>();
 
-const removed = await userService.remove("ID001");
+    const newUser = new User();
+    newUser.username = body["username"];
+    newUser.email = body["email"];
+    newUser.password = body["password"];
 
-console.log(removed);
-console.log(await userService.getList());
+    const { id } = c.req.param();
+
+    const data = await userService.update(id, newUser);
+
+    return c.json(data);
+  })
+  .delete("user/:id", async (c) => {
+    const { id } = c.req.param();
+
+    const data = await userService.remove(id);
+
+    return c.json(data);
+  });
+
+Deno.serve(app.fetch);

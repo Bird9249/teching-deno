@@ -2,10 +2,15 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "npm:hono": "npm:hono@3.8.1",
       "npm:reflect-metadata": "npm:reflect-metadata@0.1.13",
       "npm:tsyringe": "npm:tsyringe@4.8.0"
     },
     "npm": {
+      "hono@3.8.1": {
+        "integrity": "sha512-im5K3bEyb6iMQP5Tfei5vfoHLnIKrsAqT/GNJJ4lxS75MvNaecUbPX0Xgi0ibTIos31lA5oYevMDGNNXhHJ9wA==",
+        "dependencies": {}
+      },
       "reflect-metadata@0.1.13": {
         "integrity": "sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==",
         "dependencies": {}

@@ -1,9 +1,10 @@
 {
   "tasks": {
-    "dev": "deno run --watch main.ts"
+    "dev": "deno run --watch --allow-net main.ts"
   },
   "imports": {
     "tsyringe": "npm:tsyringe",
-    "reflect-metadata": "npm:reflect-metadata"
+    "reflect-metadata": "npm:reflect-metadata",
+    "hono": "npm:hono"
   }
 }
